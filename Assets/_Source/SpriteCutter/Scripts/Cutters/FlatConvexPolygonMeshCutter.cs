@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -14,18 +15,18 @@ namespace UnitySpriteCutter.Cutters {
 			}
 		}
 
-		public static CutResult Cut( Vector2 lineStart, Vector2 lineEnd, Mesh mesh ) {
+		public static CutResult Cut( Vector2 lineStart, Vector2 lineEnd, FlatConvexCollidersCutter.CutResult cutResult, Mesh mesh ) {
 			CutResult result = new CutResult();
 
-			Vector2[] shape = ConvertVerticesToShape( mesh.vertices );
+			/*Vector2[] shape = ConvertVerticesToShape( mesh.vertices );
 			ShapeCutter.CutResult shapeCutResult = ShapeCutter.CutShapeIntoTwo( lineStart, lineEnd, shape );
 			if ( shapeCutResult.firstSidePoints.Length < 3 ||
 			     shapeCutResult.secondSidePoints.Length < 3 ) {
 				return result;
-			}
+			}*/
 
-			result.firstSideMesh  = GenerateHalfMeshFrom( mesh, shapeCutResult.firstSidePoints );
-			result.secondSideMesh = GenerateHalfMeshFrom( mesh, shapeCutResult.secondSidePoints );
+			result.firstSideMesh  = GenerateHalfMeshFrom( mesh, cutResult.firstSideColliderRepresentations[0].paths[0]);
+			result.secondSideMesh = GenerateHalfMeshFrom( mesh, cutResult.secondSideColliderRepresentations[0].paths[0]);
 
 			return result;
 		}
@@ -33,8 +34,11 @@ namespace UnitySpriteCutter.Cutters {
 		static Vector2[] ConvertVerticesToShape( Vector3[] vertices ) {
 			Vector2[] shape = new Vector2[ vertices.Length ];
 			float z = vertices[ 0 ].z;
-			for ( int i = 0; i < vertices.Length; i++ ) {
-				if ( vertices[ i ].z != z ) {
+			
+            for ( int i = 0; i < vertices.Length; i++ ) 
+            {
+				if ( vertices[ i ].z != z ) 
+                {
 					throw new System.Exception( "Given mesh isn't flat! " + z + " vs " + vertices[ i ].z );
 				}
 				shape[ i ] = vertices[ i ];
@@ -42,7 +46,7 @@ namespace UnitySpriteCutter.Cutters {
 			return shape;
 		}
 
-		static Mesh GenerateHalfMeshFrom( Mesh original, Vector2[] flatVertices ) {
+		static Mesh GenerateHalfMeshFrom( Mesh original, Vector2[] flatVertices) {
 			Vector3[] newVertices = new Vector3[ flatVertices.Length ];
 			for ( int i = 0; i < flatVertices.Length; i++ ) {
 				newVertices[ i ] = (Vector3)flatVertices[ i ];
@@ -56,7 +60,7 @@ namespace UnitySpriteCutter.Cutters {
 
 			result.vertices = newVertices;
 			result.triangles = GenerateConvexPolygonTrianglesFromVertices( newVertices );
-			result.uv = GenerateProportionalUVs( newVertices, original );
+            result.uv = GenerateProportionalUVs( newVertices, original );
 
 			result.Optimize();
 			result.RecalculateNormals();
@@ -79,13 +83,15 @@ namespace UnitySpriteCutter.Cutters {
 			return result.ToArray();
 		}
 
-		static Vector2[] GenerateProportionalUVs( Vector3[] vertices, Mesh original ) {
+		static Vector2[] GenerateProportionalUVs( Vector3[] vertices, Mesh original ) 
+        {
 			Vector2[] result = new Vector2[ vertices.Length ];
 
 			int vertexIndexToCalculateDiff = 0;
 			for ( int i = 1; i < original.vertexCount; i++ ) {
-				if ( original.vertices[ 0 ].x != original.vertices[ i ].x &&
-				     original.vertices[ 0 ].y != original.vertices[ i ].y ) {
+				if ( Math.Abs(original.vertices[ 0 ].x - original.vertices[ i ].x) > float.Epsilon &&
+				     Math.Abs(original.vertices[ 0 ].y - original.vertices[ i ].y) > float.Epsilon ) 
+                {
 					vertexIndexToCalculateDiff = i;
 					break;
 				}
@@ -100,11 +106,13 @@ namespace UnitySpriteCutter.Cutters {
 			distanceToUVMap.x = twoFirstUVsDiff.x / twoFirstVerticesDiff.x;
 			distanceToUVMap.y = twoFirstUVsDiff.y / twoFirstVerticesDiff.y;
 
-			for ( int i = 0; i < vertices.Length; i++ ) {
+			for ( int i = 0; i < vertices.Length; i++ ) 
+            {
 				result[ i ] = ( vertices[ i ] - original.vertices[ 0 ] );
-				result[ i ] = new Vector2( result[ i ].x * distanceToUVMap.x,
-				                           result[ i ].y * distanceToUVMap.y );
-				result[ i ] += original.uv[ 0 ];
+				result[ i ] = new Vector2(result[ i ].x * distanceToUVMap.x,
+                    result[ i ].y * distanceToUVMap.y );
+
+                result[i] += original.uv[ 0 ];
 			}
 
 			return result;

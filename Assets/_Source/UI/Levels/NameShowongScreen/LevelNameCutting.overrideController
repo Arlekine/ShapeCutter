@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: LevelNameCutting
+  m_Controller: {fileID: 9100000, guid: 64a58d2aae80f62418e0aaab479a4416, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 3e90dfe081df58546b40f355ef7d1118, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 73b1e3e956fb21c4a8881d37872a3451, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 20aa9feae059a89419e14df010589e2f, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 92b93d75728e3594bae66d7b56780776, type: 2}

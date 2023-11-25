@@ -10,7 +10,7 @@ public class ComplexUIAnimation : UiShowingAnimation
         {
             foreach (var showingAnimation in _animations)
             {
-                if (!showingAnimation.IsShowed)
+                if (showingAnimation.IsShowed == false)
                     return false;
             }
 

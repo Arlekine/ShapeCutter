@@ -1,15 +1,33 @@
-using System;
-using UISystem;
 using UnityEngine;
 
 namespace Levels
 {
-    public abstract class Level : MonoBehaviour, IUISpawner
+    [CreateAssetMenu(fileName = "Level_", menuName = "DATA/Level")]
+    public class Level : ScriptableObject
     {
-        protected UI _ui;
+        public enum State
+        {
+            Closed = -1,
+            Opened = 0,
+            Passed = 1,
+            PassedGood = 2,
+            PassedPerfect = 3
+        }
 
-        public Action<LevelResult> Completed;
+        [SerializeField] private LevelRoot _levelPrefab;
+        [SerializeField] private Sprite _icon;
 
-        public abstract void Init(UI ui);
+        private State _currentState = State.Closed;
+
+        public LevelRoot LevelPrefab => _levelPrefab;
+        public Sprite Icon => _icon;
+
+        public State CurrentState
+        {
+            get => _currentState;
+            set => _currentState = value;
+        }
+
+        public int EarnedStars => Mathf.Max((int)CurrentState, 0);
     }
 }

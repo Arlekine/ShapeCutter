@@ -27,6 +27,7 @@ namespace UnitySpriteCutter {
 		public static SpriteCutterGameObject CreateAsCopyOf( GameObject origin, bool secondSide ) {
 			SpriteCutterGameObject result = new SpriteCutterGameObject();
 			result.gameObject = new GameObject( origin.name + ( !secondSide ? "_firstSide" : "_secondSide" ) );
+            result.gameObject.transform.parent = origin.transform.parent;
 			result.CopyGameObjectParametersFrom( origin );
 			result.CopyTransformFrom( origin.transform );
 			return result;

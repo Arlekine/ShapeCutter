@@ -6,8 +6,7 @@ public static class AudioManager
 {
     public enum StaticSound
     {
-        MainClick,
-        ItemChange
+        UIClick
     }
 
     private static Dictionary<StaticSound, AudioSource> _staticSources = new Dictionary<StaticSound, AudioSource>();
@@ -21,6 +20,7 @@ public static class AudioManager
             _staticSources[sound] = CreateNewSource($"StaticSound-{sound}");
 
         var clip = Resources.Load<AudioClip>(sound.ToString());
+        _staticSources[sound].volume = 0.5f;
         _staticSources[sound].PlayOneShot(clip);
 
         return _staticSources[sound];

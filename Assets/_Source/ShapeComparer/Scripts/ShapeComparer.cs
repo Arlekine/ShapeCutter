@@ -1,4 +1,7 @@
 using System;
+using System.Collections;
+using System.Threading;
+using System.Threading.Tasks;
 using ShapeComparing.Shapes;
 using UnityEngine;
 
@@ -49,6 +52,9 @@ namespace ShapeComparing
         }
 
         [SerializeField] private int _comparingPointsInMeter;
+        [SerializeField] private int _maxCalculationsPerFrame = 1000;
+
+        private Coroutine _currentCalculation;
 
         public float GetShapesSimilarityPercentage(Shape shape1, Shape shape2)
         {
@@ -76,6 +82,68 @@ namespace ShapeComparing
             }
 
             return (samePointsCount / allPointsCount);
+        }
+
+        public IEnumerator GetShapesSimilarityPercentageAsync(Shape shape1, Shape shape2, Action<float> onCompared)
+        {
+            return CalculateSimilarityRoutine(shape1, shape2, onCompared);
+        }
+
+        private IEnumerator CalculateSimilarityRoutine(Shape shape1, Shape shape2, Action<float> onCompared)
+        {
+            var zonesSize = shape1.BoundsSquare > shape2.BoundsSquare ? shape1.BoundsSize : shape2.BoundsSize;
+
+            var shapeComparingZone1 = new ShapeComparingZone(shape1.BoundsCenter, zonesSize, _comparingPointsInMeter);
+            var shapeComparingZone2 = new ShapeComparingZone(shape2.BoundsCenter, zonesSize, _comparingPointsInMeter);
+
+            float currentCalculationsCount = 0;
+
+            for (int x = 0; x < shapeComparingZone1.Width; x++)
+            {
+                for (int y = 0; y < shapeComparingZone1.Height; y++)
+                {
+                    shapeComparingZone1[x, y] = shape1.IsPointInsideShape(shapeComparingZone1.GetPositionAtZonePoint(x, y));
+
+                    if (currentCalculationsCount > _maxCalculationsPerFrame)
+                    {
+                        currentCalculationsCount = 0;
+                        yield return null;
+                    }
+                }
+            }
+
+            for (int x = 0; x < shapeComparingZone2.Width; x++)
+            {
+                for (int y = 0; y < shapeComparingZone2.Height; y++)
+                {
+                    shapeComparingZone2[x, y] = shape2.IsPointInsideShape(shapeComparingZone2.GetPositionAtZonePoint(x, y));
+
+                    if (currentCalculationsCount > _maxCalculationsPerFrame)
+                    {
+                        currentCalculationsCount = 0;
+                        yield return null;
+                    }
+                }
+            }
+
+            float samePointsCount = 0;
+            float allPointsCount = 0;
+
+            for (int x = 0; x < shapeComparingZone1.Width; x++)
+            {
+                for (int y = 0; y < shapeComparingZone1.Height; y++)
+                {
+                    if (shapeComparingZone1[x, y] || shapeComparingZone2[x, y])
+                        allPointsCount++;
+
+                    if (shapeComparingZone1[x, y] && shapeComparingZone2[x, y])
+                        samePointsCount++;
+                }
+            }
+
+            var similarity = samePointsCount / allPointsCount;
+
+            onCompared?.Invoke(similarity);
         }
 
         private void WriteShapeIntersectionIntoZone(Shape shape, ShapeComparingZone zone)

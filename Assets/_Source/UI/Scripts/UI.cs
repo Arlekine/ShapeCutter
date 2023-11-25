@@ -6,13 +6,21 @@ namespace UISystem
 {
     public class UI : MonoBehaviour
     {
-        [SerializeField] private RectTransform _elementsParent;
+        [SerializeField] private RectTransform _levelParent;
+        [SerializeField] private RectTransform _mainMenuParent;
 
         private Dictionary<IUISpawner, List<Component>> _spawnedElements = new Dictionary<IUISpawner, List<Component>>();
+        private Dictionary<UIType, RectTransform> _elementsParents = new Dictionary<UIType, RectTransform>();
 
-        public T CreateUIElement<T>(T prefab, IUISpawner spawner) where T : Component
+        private void Awake()
         {
-            var element = Instantiate(prefab, _elementsParent);
+            _elementsParents.Add(UIType.Level, _levelParent);
+            _elementsParents.Add(UIType.MainMenu, _mainMenuParent);
+        }
+
+        public T CreateUIElement<T>(T prefab, UIType type, IUISpawner spawner) where T : Component
+        {
+            var element = Instantiate(prefab, _elementsParents[type]);
 
             if (_spawnedElements.ContainsKey(spawner))
                 _spawnedElements[spawner].Add(element);
@@ -22,11 +30,11 @@ namespace UISystem
             return element;
         }
 
-        public bool DestroyElement(Component element, IUISpawner spawner)
+        public bool DestroyElement(Component element, float offset, IUISpawner spawner)
         {
             if (_spawnedElements.ContainsKey(spawner) && _spawnedElements[spawner].Remove(element))
             {
-                Destroy(element.gameObject);
+                Destroy(element.gameObject, offset);
                 return true;
             }
 
@@ -37,10 +45,16 @@ namespace UISystem
         {
             foreach (var element in _spawnedElements[spawner])
             {
-                Destroy(element);
+                Destroy(element.gameObject);
             }
         }
     }
 
-    public interface IUISpawner{} 
+    public interface IUISpawner{}
+
+    public enum UIType
+    {
+        Level,
+        MainMenu
+    }
 }

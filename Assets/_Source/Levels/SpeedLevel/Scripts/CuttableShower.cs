@@ -9,22 +9,22 @@ namespace Levels
     {
         [SerializeField] private Cuttable _cuttablePrefab;
 
-        public (Tween animation, Cuttable cuttable) ShowNewCuttable()
+        public (Tween animation, Cuttable cuttable) ShowNewCuttable(Transform parent)
         {
-            var newCuttable = CreateNewCuttable();
+            var newCuttable = CreateNewCuttable(parent);
             return (AnimateEntrance(newCuttable), newCuttable);
         }
 
         public Tween RemoveCuttable(Cuttable cuttable)
         {
             var tween = AnimateExit(cuttable);
-            tween.onComplete += () => { Destroy(cuttable.gameObject); };
+            tween.onComplete += () => { Destroy(cuttable.gameObject, 0.1f); };
             return tween;
         }
 
-        private Cuttable CreateNewCuttable()
+        private Cuttable CreateNewCuttable(Transform parent)
         {
-            return Instantiate(_cuttablePrefab);
+            return Instantiate(_cuttablePrefab, parent);
         }
 
         protected abstract Tween AnimateEntrance(Cuttable cuttable);

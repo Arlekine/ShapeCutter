@@ -13,12 +13,13 @@ public class LevelResultProgress : MonoBehaviour
     [SerializeField] private float _changeDuration;
 
     [EditorButton]
-    public void Init(float oneStarTargetProgress, float twoStarTargetProgress)
+    public void Init(float oneStarTargetProgress, float twoStarTargetProgress, float threeStarProgress = 1f)
     {
         _oneStar.Init(oneStarTargetProgress, _mainParent.sizeDelta.x);
         _twoStar.Init(twoStarTargetProgress, _mainParent.sizeDelta.x);
-        _threeStar.Init(1f, _mainParent.sizeDelta.x);
+        _threeStar.Init(threeStarProgress, _mainParent.sizeDelta.x);
 
+        _progressSlider.value = 0f;
         _progressSlider.onValueChanged.AddListener(UpdateStars);
     }
 
@@ -33,7 +34,6 @@ public class LevelResultProgress : MonoBehaviour
 
     private void UpdateStars(float value)
     {
-        print("!!");
         _oneStar.UpdateSelection(value);
         _twoStar.UpdateSelection(value);
         _threeStar.UpdateSelection(value);

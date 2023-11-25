@@ -36,6 +36,7 @@ namespace UnitySpriteCutter
         }
 
         public Vector3 RealCenter => Renderer.bounds.center;
+        public Vector3 RealCenterOffset => transform.position - Renderer.bounds.center;
         public Vector2 Size => Renderer.bounds.size;
         public float BoundsSquare => Size.x * Size.y;
 

@@ -18,6 +18,7 @@ namespace Levels
             public Cuttable StartingCuttable;
             public PolygonCollider2D TargetPolygon;
             public ComplexCutPostProcessor CutPostProcessor;
+            public SpriteRendererColorRandomizer ColorRandomizer;
         }
 
         public class ShapeCuttingResult
@@ -29,22 +30,29 @@ namespace Levels
 
         [SerializeField] private LinecastCutter _linecastCutter;
         [SerializeField] private MouseInputRepresentationBehaviour _lineView;
-        [SerializeField] private MouseLineInput _lineInput;
+        [SerializeField] private ParticleSystem _partDestractionFX;
+        [SerializeField] private float _sizeToClearCuttable = 0.35f;
 
         [Space]
         [SerializeField] private DottedPolygonDrawer _polygonDrawerPrefab;
         [SerializeField] private ShapeComparer _shapeComparer;
-        
+
+        private ILineInput _lineInput;
+        private Color _fxColor;
         private Cuttable _currentCuttable;
         private PolygonCollider2D _targetPolygon;
         private DottedPolygonDrawer _polygonDrawer;
 
         private List<GameObject> _allPieces = new List<GameObject>();
 
+        private Coroutine _currentSimilarityCheck;
+
         public Action<Cuttable> Cutted;
+        public Action BaseDestroyed;
 
         public void Init()
         {
+            _lineInput = GetComponentInChildren<ILineInput>();
             _linecastCutter.Init(_lineInput);
             _lineView.Init(_lineInput);
             _polygonDrawer = Instantiate(_polygonDrawerPrefab);
@@ -68,10 +76,23 @@ namespace Levels
                     Destroy(input.secondSide);
                 }
 
+                if (input.firstSide.BoundsSquare <= _sizeToClearCuttable)
+                {
+                    Destroy(input.firstSide.gameObject);
+                    CreateDestroyFX(input.firstSide.RealCenter);
+                }
+
+                if (input.secondSide.BoundsSquare <= _sizeToClearCuttable)
+                {
+                    Destroy(input.secondSide.gameObject);
+                    CreateDestroyFX(input.secondSide.RealCenter);
+                }
+
                 StartCoroutine(InvokeRoutine());
                 return input;
             }));
-
+            
+            _fxColor = input.ColorRandomizer.Randomize();
             ClearCurrentPieces();
 
             _linecastCutter.SetPostProcessor(input.CutPostProcessor);
@@ -90,6 +111,19 @@ namespace Levels
             var shape2 = new PolygonColliderShape(_targetPolygon);
 
             return _shapeComparer.GetShapesSimilarityPercentage(shape1, shape2);
+        }
+
+        public void GetCurrentSimilarityAsync(Action<float> onCompleted)
+        {
+            if (_currentSimilarityCheck != null)
+            {
+                StopCoroutine(_currentSimilarityCheck);
+            }
+
+            var shape1 = new PolygonColliderShape(_currentCuttable.GetComponent<PolygonCollider2D>());
+            var shape2 = new PolygonColliderShape(_targetPolygon);
+
+            _currentSimilarityCheck = StartCoroutine(_shapeComparer.GetShapesSimilarityPercentageAsync(shape1, shape2, onCompleted));
         }
 
         public void ClearCurrentPieces()
@@ -128,10 +162,22 @@ namespace Levels
             return new ShapeCuttingResult() { FinalCuttable = _currentCuttable, TargetShape = _targetPolygon, ComparingResult = similarity};
         }
 
+        private void CreateDestroyFX(Vector3 position)
+        {
+            var fx = Instantiate(_partDestractionFX, position, Quaternion.identity);
+            var main = fx.main;
+            main.startColor = new ParticleSystem.MinMaxGradient(_fxColor);
+        }
+
         private IEnumerator InvokeRoutine()
         {
             yield return null;
-            Cutted?.Invoke(_currentCuttable);
+            print("InvokeRoutine");
+
+            if (_currentCuttable != null)
+                Cutted?.Invoke(_currentCuttable);
+            else
+                BaseDestroyed?.Invoke();
         }
     }
 }

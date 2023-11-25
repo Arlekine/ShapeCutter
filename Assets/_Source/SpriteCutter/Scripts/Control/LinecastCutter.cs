@@ -7,6 +7,8 @@ namespace UnitySpriteCutter.Control
     internal class LinecastCutter : MonoBehaviour
     {
         [SerializeField] private LayerMask _cuttableLayer;
+        [SerializeField] private float _minLineLength = 0.01f;
+        [SerializeField] private SingleSoundPlayer _cutSound;
 
         private ILineInput _lineInput;
         private CutPostProcessor _cutPostProcessor;
@@ -30,6 +32,9 @@ namespace UnitySpriteCutter.Control
 
         private void LinecastCut(Vector2 lineStart, Vector2 lineEnd, int layerMask = Physics2D.AllLayers)
         {
+            if (Vector2.Distance(lineStart, lineEnd) < _minLineLength)
+                return;
+
             List<Cuttable> gameObjectsToCut = new List<Cuttable>();
             RaycastHit2D[] hits = Physics2D.LinecastAll(lineStart, lineEnd, layerMask);
 
@@ -44,8 +49,13 @@ namespace UnitySpriteCutter.Control
 
             foreach (var cuttable in gameObjectsToCut)
             {
-                SpriteCutter.Cut(new SpriteCutterInput(lineStart, lineEnd, cuttable), (output) => _cutPostProcessor.PostProcessCut(output));
+                SpriteCutter.Cut(new SpriteCutterInput(lineStart, lineEnd, cuttable), (output) =>
+                {
+                    _cutSound.Play();
+                    _cutPostProcessor.PostProcessCut(output);
+                });
             }
+
         }
     }
 }

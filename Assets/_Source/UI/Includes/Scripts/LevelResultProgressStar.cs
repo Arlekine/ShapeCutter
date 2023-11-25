@@ -6,6 +6,7 @@ public class LevelResultProgressStar : MonoBehaviour
 
     private RectTransform _rectTransform;
     private float _targetProgress;
+    private bool _isShowed;
 
     public RectTransform RectTransform
     {
@@ -28,9 +29,15 @@ public class LevelResultProgressStar : MonoBehaviour
 
     public void UpdateSelection(float currentProgress)
     {
-        if (currentProgress >= _targetProgress && _animation.IsShowed == false)
+        if (currentProgress >= _targetProgress && _isShowed == false)
+        {
+            _isShowed = true;
             _animation.Show();
-        else if (currentProgress < _targetProgress && _animation.IsShowed)
+        }
+        else if (currentProgress < _targetProgress && _isShowed == true)
+        {
+            _isShowed = false;
             _animation.Hide();
+        }
     }
 }

@@ -21,6 +21,12 @@ namespace UnitySpriteCutter.Control
             _mouseStart = Camera.main.ScreenToWorldPoint(pressScreenPos);
         }
 
+        private void OnEnable()
+        {
+            if (_lineRenderer != null)
+                _lineRenderer.enabled = false;
+        }
+
         private void Update()
         {
             if (_lineInput.IsPressed)

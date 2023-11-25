@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7860586336016792701}
-  - component: {fileID: 7860586336016792699}
+  - component: {fileID: 7195688089816838768}
   m_Layer: 0
   m_Name: Input
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 4439812266690956760}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7860586336016792699
+--- !u!114 &7195688089816838768
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,7 +41,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7860586336016792700}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 736995283bc14904787fba80033f8552, type: 3}
+  m_Script: {fileID: 11500000, guid: 9fe3e1b881c2dbe469e250547dc76d52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7860586336411443122
@@ -54,6 +54,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7860586336411443121}
   - component: {fileID: 7860586336411443123}
+  - component: {fileID: 7740012196196163861}
   m_Layer: 0
   m_Name: LinecastCutter
   m_TagString: Untagged
@@ -91,6 +92,23 @@ MonoBehaviour:
   _cuttableLayer:
     serializedVersion: 2
     m_Bits: 2
+  _minLineLength: 0.3
+  _cutSound: {fileID: 7740012196196163861}
+--- !u!114 &7740012196196163861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7860586336411443122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d9b02f5eaccae9448411787d58a12ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _volume: 1
+  _sound: {fileID: 8300000, guid: 491dc1c5ef606294796ed13cfeb24c48, type: 3}
+  _loop: 0
 --- !u!1 &7860586337280232394
 GameObject:
   m_ObjectHideFlags: 0
@@ -293,7 +311,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _linecastCutter: {fileID: 7860586336411443123}
   _lineView: {fileID: 7860586337280232395}
-  _lineInput: {fileID: 7860586336016792699}
+  _partDestractionFX: {fileID: 3840128415286124871, guid: cc415ec717e2f1245a7ea54fd7d45d29, type: 3}
+  _sizeToClearCuttable: 0.35
   _polygonDrawerPrefab: {fileID: 8265559995965145571, guid: 148db3ee738cf9f4cbac47dcaa418333, type: 3}
   _shapeComparer:
     _comparingPointsInMeter: 15
+    _maxCalculationsPerFrame: 1000

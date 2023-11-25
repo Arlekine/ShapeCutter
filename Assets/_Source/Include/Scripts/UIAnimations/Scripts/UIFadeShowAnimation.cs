@@ -10,7 +10,7 @@ public class UIFadeShowAnimation : UiShowingAnimation
     [SerializeField] protected bool _hideOnAwake = true;
     [SerializeField] protected bool _reversed;
 
-    public override bool IsShowed => _canvasGroup.interactable;
+    public override bool IsShowed => _canvasGroup.alpha > 0;
 
     private void Awake()
     {

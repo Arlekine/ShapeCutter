@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46ddcf8a8a7150b47bce348b3f11fd96, type: 3}
+  m_Name: Stage_2
+  m_EditorClassIdentifier: 
+  _levels:
+  - {fileID: 11400000, guid: 4e16814254061224f8fbbda5d6df490c, type: 2}
+  - {fileID: 11400000, guid: 1a998c0ca1fda314a8abcddd4f813702, type: 2}
+  - {fileID: 11400000, guid: 50d987ef77d29c840b41d4f4df7e191f, type: 2}
+  - {fileID: 11400000, guid: a9a06539a3ae0a3449968a5926a525c3, type: 2}
+  - {fileID: 11400000, guid: c4af05e4b2f1cb04dbda46cd45efdc66, type: 2}
+  - {fileID: 11400000, guid: bd398467605d86a47976e8a15a56a4e0, type: 2}
+  - {fileID: 11400000, guid: 6ea0c515d31bdc948870754dc8e97b7b, type: 2}
+  - {fileID: 11400000, guid: bee2acae7633fdb49b4885522860b98f, type: 2}
+  - {fileID: 11400000, guid: eba286630c832174984a28555cdad2d6, type: 2}
+  _starsToOpenStage: 6

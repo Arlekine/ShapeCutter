@@ -5,12 +5,12 @@ public class AnimatorShowingAnimation : UiShowingAnimation
     [SerializeField] private Animator _animator;
 
     [Header("Active states")]
-    [SerializeField] protected string _showAnimation;
-    [SerializeField] protected string _hideAnimation;
+    [SerializeField] protected string _showAnimation = "Show";
+    [SerializeField] protected string _hideAnimation = "Hide";
 
     [Header("Static states")]
-    [SerializeField] protected string _showedState;
-    [SerializeField] protected string _hidedState;
+    [SerializeField] protected string _showedState = "Showed";
+    [SerializeField] protected string _hidedState = "Hided";
 
     private bool _isShowed;
 

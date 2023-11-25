@@ -23,6 +23,8 @@ public class Timer : MonoBehaviour
         _currentTime = 0f;
         _isTimerRunning = true;
         _isPaused = false;
+
+        _currentExpireEvent = onExpired;
     }
 
     public void Stop()

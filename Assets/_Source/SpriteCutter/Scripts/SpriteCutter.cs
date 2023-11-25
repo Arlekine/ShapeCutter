@@ -64,24 +64,29 @@ namespace UnitySpriteCutter
 
 			SpriteRenderer spriteRenderer = input.GameObject.GetComponent<SpriteRenderer>();
 			MeshRenderer meshRenderer = input.GameObject.GetComponent<MeshRenderer>();
+			
+            FlatConvexCollidersCutter.CutResult collidersCutResults;
+            if (input.DontCutColliders)
+            {
+                collidersCutResults = new FlatConvexCollidersCutter.CutResult();
+            }
+            else
+            {
+                collidersCutResults =
+                    CutColliders(localLineStart, localLineEnd, input.GameObject.GetComponents<Collider2D>());
+
+                if (collidersCutResults.DidNotCut())
+                {
+                    return false;
+                }
+            }
 
 			FlatConvexPolygonMeshCutter.CutResult meshCutResult =
-				CutSpriteOrMeshRenderer( localLineStart, localLineEnd, spriteRenderer, meshRenderer );
+				CutSpriteOrMeshRenderer( localLineStart, localLineEnd, spriteRenderer, collidersCutResults, meshRenderer);
 			if ( meshCutResult.DidNotCut() ) {
 				return false;
 			}
 
-			FlatConvexCollidersCutter.CutResult collidersCutResults;
-			if ( input.DontCutColliders ) {
-				collidersCutResults = new FlatConvexCollidersCutter.CutResult();
-			} else {
-				collidersCutResults =
-					CutColliders( localLineStart, localLineEnd, input.GameObject.GetComponents<Collider2D>() );
-
-				if ( collidersCutResults.DidNotCut() ) {
-					return false;
-				}
-			}
 
 			SpriteCutterGameObject secondSideResult = SpriteCutterGameObject.CreateAsCopyOf( input.GameObject, true );
 			PrepareResultGameObject( secondSideResult, spriteRenderer, meshRenderer,
@@ -93,7 +98,14 @@ namespace UnitySpriteCutter
 				firstSideResult = SpriteCutterGameObject.CreateAsCopyOf( input.GameObject, true );
 				PrepareResultGameObject( firstSideResult, spriteRenderer, meshRenderer, meshCutResult.firstSideMesh, collidersCutResults.firstSideColliderRepresentations );
 
-			} 
+                UnityEngine.Object.Destroy(input.GameObject);
+
+                onCutSuccess?.Invoke(new SpriteCutterOutput()
+                {
+                    firstSide = firstSideResult.gameObject.AddComponent<Cuttable>(),
+                    secondSide = secondSideResult.gameObject.AddComponent<Cuttable>()
+                });
+            } 
             else if ( input.CreationMode == SpriteCutterInput.GameObjectCreationMode.CUT_OFF_ONE ) 
             {
 				firstSideResult = SpriteCutterGameObject.CreateAs( input.GameObject);
@@ -128,9 +140,9 @@ namespace UnitySpriteCutter
             return true;
         }
 
-		static FlatConvexPolygonMeshCutter.CutResult CutSpriteOrMeshRenderer( Vector2 lineStart, Vector2 lineEnd, SpriteRenderer spriteRenderer, MeshRenderer meshRenderer ) {
+		static FlatConvexPolygonMeshCutter.CutResult CutSpriteOrMeshRenderer( Vector2 lineStart, Vector2 lineEnd, SpriteRenderer spriteRenderer, FlatConvexCollidersCutter.CutResult cutResult, MeshRenderer meshRenderer ) {
 			Mesh originMesh = GetOriginMeshFrom( spriteRenderer, meshRenderer );
-			return FlatConvexPolygonMeshCutter.Cut( lineStart, lineEnd, originMesh );
+			return FlatConvexPolygonMeshCutter.Cut( lineStart, lineEnd, cutResult, originMesh);
 		}
 
 		static Mesh GetOriginMeshFrom( SpriteRenderer spriteRenderer, MeshRenderer meshRenderer ) {
