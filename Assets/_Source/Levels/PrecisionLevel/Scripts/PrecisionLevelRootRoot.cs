@@ -7,7 +7,6 @@ using UISystem;
 using UnityEngine;
 using UnityEngine.UI;
 using UnitySpriteCutter;
-using UnitySpriteCutter.Control;
 using UnitySpriteCutter.Control.PostProcessing;
 
 namespace Levels
@@ -17,7 +16,7 @@ namespace Levels
         [SerializeField] private ShapeCuttingTask _shapeCuttingTask;
         [SerializeField] private Cuttable _startingCuttable;
         [SerializeField] private PolygonCollider2D _targetPolygon;
-        [SerializeField] private SpriteRendererColorRandomizer _colorRandomizer;
+        [SerializeField] private ShapeColorHolder _colorRandomizer;
 
         [Header("Comparing")]
         [SerializeField] private ShapeComparer _shapeComparer;
@@ -39,17 +38,38 @@ namespace Levels
         [SerializeField] private PrecisionLevelUI _precisionLevelUIPrefab;
         [SerializeField] private LevelNameView _levelNamePrefab;
 
+        private ITutorialAnimation _pressAnimation;
         private PrecisionLevelUI _precisionLevelUI;
         private LevelNameView _levelName;
         private UnlinearValueProgress _unlinearValueProgress;
+        private TutorialHolder _tutorialHolder;
 
-        public override void Init(UI ui)
+        private int _cutTimes;
+
+        public override void Init(UI ui, TutorialHolder tutorial)
         {
             _ui = ui;
-            var postProcessor = new ComplexCutPostProcessor();
+            _tutorialHolder = tutorial;
+             var postProcessor = new ComplexCutPostProcessor();
 
             postProcessor.PostProcessors.Add(new BigPartStaticRigidbodyPostProcessor());
             postProcessor.PostProcessors.Add(new AddingForcePostProcessor(_forceAfterCut));
+
+            if (tutorial.Data.IsStepFinished(TutorialStep.PRECISION_CHECK) == false)
+            {
+                postProcessor.PostProcessors.Add(new FunctionPostProcessor((input) =>
+                {
+                    _cutTimes++;
+
+                    if (_cutTimes >= 2)
+                    {
+                        _pressAnimation = tutorial.CreatePressTutorial(_precisionLevelUI.TutorialPoint, Vector2.zero);
+                        _pressAnimation.Play();
+                    }
+
+                    return input;
+                }));
+            }
 
             _shapeCuttingTask.Init();
             _shapeCuttingTask.StartNewCutting(new ShapeCuttingTask.ShapeCuttingInput() {CutPostProcessor = postProcessor, StartingCuttable = _startingCuttable, TargetPolygon = _targetPolygon, ColorRandomizer = _colorRandomizer});
@@ -83,6 +103,12 @@ namespace Levels
 
         private void CompleteLevel()
         {
+            if (_tutorialHolder.Data.IsStepFinished(TutorialStep.PRECISION_CHECK) == false)
+            {
+                _pressAnimation?.StopAndDestroy();
+                _tutorialHolder.Data.FinishedStep(TutorialStep.PRECISION_CHECK);
+            }
+
             _precisionLevelUI.CheckButton.onClick.RemoveListener(CompleteLevel);
             StartCoroutine(CompletionRoutine());
         }

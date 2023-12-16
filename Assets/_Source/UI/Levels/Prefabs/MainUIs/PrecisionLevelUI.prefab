@@ -34,6 +34,7 @@ RectTransform:
   - {fileID: 4721989786182998833}
   - {fileID: 4916728489128990645}
   - {fileID: 2669920422335390614}
+  - {fileID: 4458760069897947556}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -59,6 +60,7 @@ MonoBehaviour:
   _progress: {fileID: 2669920422335390697}
   _progressShowingAnimation: {fileID: 3107099544519058513}
   _checkButton: {fileID: 4721989786182998832}
+  _tutorialPoint: {fileID: 4458760069897947556}
 --- !u!114 &698587570841822206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -88,6 +90,42 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!1 &7765363285150972565
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4458760069897947556}
+  m_Layer: 5
+  m_Name: TutorialPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &4458760069897947556
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7765363285150972565}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 698587570841822192}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 410.53, y: -50}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &1088691454
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -321,7 +359,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1649482869231136987, guid: 37f1a5e5b3caa384abfcf1282c16f7d3, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 175
+      value: 218.9385
       objectReference: {fileID: 0}
     - target: {fileID: 1649482869231136987, guid: 37f1a5e5b3caa384abfcf1282c16f7d3, type: 3}
       propertyPath: m_SizeDelta.y
@@ -379,6 +417,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 804461bef59b141dba258fc997c8ca15, type: 3}
+    - target: {fileID: 7683362319985097792, guid: 37f1a5e5b3caa384abfcf1282c16f7d3, type: 3}
+      propertyPath: m_text
+      value: "\u0421\u0440\u0430\u0432\u043D\u0438\u0442\u044C"
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 37f1a5e5b3caa384abfcf1282c16f7d3, type: 3}
 --- !u!114 &4721989786182998832 stripped
@@ -397,6 +439,50 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1649482869231136987, guid: 37f1a5e5b3caa384abfcf1282c16f7d3, type: 3}
   m_PrefabInstance: {fileID: 6297091517285198826}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7201364002472991117 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3788548977672647271, guid: 37f1a5e5b3caa384abfcf1282c16f7d3, type: 3}
+  m_PrefabInstance: {fileID: 6297091517285198826}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3061803846373916027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7201364002472991117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 344445a89b4f74a0e9a0a766903df87e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mTerm: LevelUI_Precision_Check
+  mTermSecondary: LilitaOne-Regular SDF
+  PrimaryTermModifier: 0
+  SecondaryTermModifier: 0
+  TermPrefix: 
+  TermSuffix: 
+  LocalizeOnAwake: 1
+  IgnoreRTL: 0
+  MaxCharactersInRTL: 0
+  IgnoreNumbersInRTL: 1
+  CorrectAlignmentForRTL: 1
+  AddSpacesToJoinedLanguages: 0
+  AllowLocalizedParameters: 1
+  AllowParameters: 1
+  TranslatedObjects: []
+  LocalizeEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  AlwaysForceLocalize: 0
+  LocalizeCallBack:
+    Target: {fileID: 0}
+    MethodName: 
+  mGUI_ShowReferences: 0
+  mGUI_ShowTems: 1
+  mGUI_ShowCallback: 0
+  mLocalizeTarget: {fileID: 0}
+  mLocalizeTargetName: I2.Loc.LocalizeTarget_TextMeshPro_UGUI
 --- !u!1001 &6297091517600614369
 PrefabInstance:
   m_ObjectHideFlags: 0

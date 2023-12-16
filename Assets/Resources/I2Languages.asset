@@ -1,0 +1,316 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f0b0c553be8edd4682e9180fdd13e37, type: 3}
+  m_Name: I2Languages
+  m_EditorClassIdentifier: 
+  mSource:
+    UserAgreesToHaveItOnTheScene: 0
+    UserAgreesToHaveItInsideThePluginsFolder: 0
+    GoogleLiveSyncIsUptoDate: 1
+    mTerms:
+    - Term: MainMenu_continue
+      TermType: 0
+      Description: 
+      Languages:
+      - continue
+      - "\u041F\u0440\u043E\u0434\u043E\u043B\u0436\u0438\u0442\u044C"
+      Flags: 0000
+      Languages_Touch: []
+    - Term: MainMenu_SelectLevel
+      TermType: 0
+      Description: 
+      Languages:
+      - select level
+      - "\u0432\u044B\u0431\u0440\u0430\u0442\u044C \u0443\u0440\u043E\u0432\u0435\u043D\u044C"
+      Flags: 0000
+      Languages_Touch: []
+    - Term: LilitaOne-Regular SDF
+      TermType: 9
+      Description: 
+      Languages:
+      - 
+      - 
+      Flags: 0000
+      Languages_Touch: []
+    - Term: MainMenu_FreeCutting
+      TermType: 0
+      Description: 
+      Languages:
+      - Free cutting
+      - "\u0421\u0432\u043E\u0431\u043E\u0434\u043D\u0430\u044F \u043D\u0430\u0440\u0435\u0437\u043A\u0430"
+      Flags: 0000
+      Languages_Touch: []
+    - Term: MainMenu_Header_1
+      TermType: 0
+      Description: 
+      Languages:
+      - CUTTING
+      - CUTTING
+      Flags: 0000
+      Languages_Touch: []
+    - Term: MainMenu_Header_2
+      TermType: 0
+      Description: 
+      Languages:
+      - PUZZLE
+      - PUZZLE
+      Flags: 0000
+      Languages_Touch: []
+    - Term: PopUps_Lose_Fail
+      TermType: 0
+      Description: 
+      Languages:
+      - FAIL!
+      - "\u041D\u0435\u0443\u0434\u0430\u0447\u0430!"
+      Flags: 0000
+      Languages_Touch: []
+    - Term: PopUps_Lose_Skip
+      TermType: 0
+      Description: 
+      Languages:
+      - You can skip this level by watching ad.
+      - "\u041C\u043E\u0436\u0435\u0442\u0435 \u043F\u0440\u043E\u043F\u0443\u0441\u0442\u0438\u0442\u044C
+        \u044D\u0442\u043E\u0442 \u0443\u0440\u043E\u0432\u0435\u043D\u044C \u043F\u043E\u0441\u043C\u043E\u0442\u0440\u0435\u0432
+        \u0440\u0435\u043A\u043B\u0430\u043C\u0443!"
+      Flags: 0000
+      Languages_Touch: []
+    - Term: PopUps_Win_Header
+      TermType: 0
+      Description: 
+      Languages:
+      - STAGE CLEAR!
+      - "\u0423\u0440\u043E\u0432\u0435\u043D\u044C \u043F\u0440\u043E\u0439\u0434\u0435\u043D!"
+      Flags: 0000
+      Languages_Touch: []
+    - Term: LevelName_Tap
+      TermType: 0
+      Description: 
+      Languages:
+      - Tap to continue
+      - "\u041D\u0430\u0436\u043C\u0438, \u0447\u0442\u043E\u0431\u044B \u043F\u0440\u043E\u0434\u043E\u043B\u0436\u0438\u0442\u044C"
+      Flags: 0000
+      Languages_Touch: []
+    - Term: LevelName_Cutting_Desctiption
+      TermType: 0
+      Description: 
+      Languages:
+      - "Cut the shape in as many pieces as you can!\nBut dont make them too small
+        \n\u2014 they will disappear!"
+      - "\u0420\u0430\u0437\u0440\u0435\u0436\u044C \u0444\u0438\u0433\u0443\u0440\u0443
+        \u043D\u0430 \u043A\u0430\u043A \u043C\u043E\u0436\u043D\u043E \u0431\u043E\u043B\u044C\u0448\u0435\u0435
+        \u043A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u043A\u0443\u0441\u043E\u0447\u043A\u043E\u0432!\n\u041D\u043E
+        \u043D\u0435 \u043D\u0430\u0440\u0435\u0436\u044C \u0438\u0445 \u0441\u043B\u0438\u0448\u043A\u043E\u043C
+        \u043C\u0435\u043B\u043A\u043E\n\u2014 \u043E\u043D\u0438 \u0438\u0441\u0447\u0435\u0437\u043D\u0443\u0442!"
+      Flags: 0000
+      Languages_Touch: []
+    - Term: LevelName_Precision_Description
+      TermType: 0
+      Description: 
+      Languages:
+      - Cut the shape as close as possible to example!
+      - "\u0412\u044B\u0440\u0435\u0436\u0438 \u0444\u0438\u0433\u0443\u0440\u0443
+        \u0442\u0430\u043A \u0431\u043B\u0438\u0437\u043A\u043E \u043A \u043F\u0440\u0438\u043C\u0435\u0440\u0443,
+        \u043A\u0430\u043A \u0441\u043C\u043E\u0436\u0435\u0448\u044C!"
+      Flags: 0000
+      Languages_Touch: []
+    - Term: LevelName_Speed_Description
+      TermType: 0
+      Description: 
+      Languages:
+      - 'Cut multiple shapes
+
+        within the allotted time'
+      - "\u0412\u044B\u0440\u0435\u0436\u0438 \u043C\u043D\u043E\u0436\u0435\u0441\u0442\u0432\u043E
+        \u0444\u0438\u0433\u0443\u0440 \u0437\u0430 \u043E\u0442\u0432\u0435\u0434\u0435\u043D\u043D\u043E\u0435
+        \u0432\u0440\u0435\u043C\u044F"
+      Flags: 0000
+      Languages_Touch: []
+    - Term: LevelUI_Precision_Check
+      TermType: 0
+      Description: 
+      Languages:
+      - Check
+      - "\u0421\u0440\u0430\u0432\u043D\u0438\u0442\u044C"
+      Flags: 0000
+      Languages_Touch: []
+    - Term: LevelUI_Speed_Pause
+      TermType: 0
+      Description: 
+      Languages:
+      - Paused
+      - "\u041F\u0430\u0443\u0437\u0430"
+      Flags: 0000
+      Languages_Touch: []
+    - Term: LevelUI_Speed_REsume
+      TermType: 0
+      Description: 
+      Languages:
+      - Resume
+      - "\u041F\u0440\u043E\u0434\u043E\u043B\u0436\u0438\u0442\u044C"
+      Flags: 0000
+      Languages_Touch: []
+    - Term: LevelUI_Speed_Reset
+      TermType: 0
+      Description: 
+      Languages:
+      - Reset
+      - "\u0421\u0431\u0440\u043E\u0441"
+      Flags: 0000
+      Languages_Touch: []
+    - Term: Tutorial_Level_Header
+      TermType: 0
+      Description: 
+      Languages:
+      - CUT!
+      - "\u0420\u0415\u0416\u042C!"
+      Flags: 0000
+      Languages_Touch: []
+    - Term: Tutorial_Level_Button
+      TermType: 0
+      Description: 
+      Languages:
+      - 'Finish
+
+        Tutorial'
+      - "\u0417\u0430\u043A\u043E\u043D\u0447\u0438\u0442\u044C\n\u041E\u0431\u0443\u0447\u0435\u043D\u0438\u0435"
+      Flags: 0000
+      Languages_Touch: []
+    - Term: PopUps_Lose_NoSkip
+      TermType: 0
+      Description: 
+      Languages:
+      - Try again!
+      - "\u041F\u043E\u043F\u0440\u043E\u0431\u0443\u0439\u0442\u0435 \u0435\u0449\u0435
+        \u0440\u0430\u0437!"
+      Flags: 0000
+      Languages_Touch: []
+    - Term: GameComplete
+      TermType: 0
+      Description: 
+      Languages:
+      - Game complete!
+      - "\u0418\u0433\u0440\u0430 \u043F\u0440\u043E\u0439\u0434\u0435\u043D\u0430!"
+      Flags: 0000
+      Languages_Touch: []
+    - Term: GameComplete_FinalText
+      TermType: 0
+      Description: 
+      Languages:
+      - 'Congratulations!
+
+        You succesfully complete all game levels!
+
+        Now
+        you can try to complete them on max stars count!'
+      - "\u041F\u043E\u0437\u0434\u0440\u0430\u0432\u043B\u044F\u0435\u043C!\n\u0412\u044B
+        \u0443\u0441\u043F\u0435\u0448\u043D\u043E \u043F\u0440\u043E\u0448\u043B\u0438\n\u0432\u0441\u0435
+        \u0443\u0440\u043E\u0432\u043D\u0438!\n\u0422\u0435\u043F\u0435\u0440\u044C
+        \u0432\u044B \u043C\u043E\u0436\u0435\u0442\u0435 \u043F\u043E\u043F\u044B\u0442\u0430\u0442\u044C\u0441\u044F
+        \u0432\u044B\u043F\u043E\u043B\u043D\u0438\u0442\u044C \u0438\u0445 \u043D\u0430
+        \u043C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u0443\u044E
+        \u043E\u0446\u0435\u043D\u043A\u0443!"
+      Flags: 0000
+      Languages_Touch: []
+    - Term: StageLocked_Header
+      TermType: 0
+      Description: 
+      Languages:
+      - Stage locked!
+      - "\u042D\u0442\u0430\u043F \u043D\u0435 \u043E\u0442\u043A\u0440\u044B\u0442!"
+      Flags: 0000
+      Languages_Touch: []
+    - Term: StageLocked_MainText
+      TermType: 0
+      Description: 
+      Languages:
+      - 'To unlock next area
+
+        you need more stars!
+
+        Get them by passing
+        previous level on better results.'
+      - "\u0427\u0442\u043E\u0431\u044B \u043F\u0435\u0440\u0435\u0439\u0442\u0438
+        \u043A \u0441\u043B\u0435\u0434\u0443\u044E\u0449\u0435\u043C\u0443 \u044D\u0442\u0430\u043F\u0443
+        \u043D\u0443\u0436\u043D\u043E\n\u043F\u043E\u043B\u0443\u0447\u0438\u0442\u044C
+        \u0431\u043E\u043B\u044C\u0448\u0435 \u0437\u0432\u0435\u0437\u0434!\n\u041F\u043E\u043B\u0443\u0447\u0430\u0439\u0442\u0435
+        \u043D\u043E\u0432\u044B\u0435 \u0437\u0432\u0435\u0437\u0434 \u0437\u0430
+        \u0443\u0436\u0435 \u043F\u0440\u043E\u0439\u0434\u0435\u043D\u043D\u044B\u0445
+        \u0443\u0440\u043E\u0432\u043D\u044F\u0445, \u043F\u0440\u043E\u0445\u043E\u0434\u044F
+        \u0438\u0445 \u043D\u0430 \u043B\u0443\u0447\u0448\u0443\u044E \u043E\u0446\u0435\u043D\u043A\u0443."
+      Flags: 0000
+      Languages_Touch: []
+    - Term: StageLocked_Current
+      TermType: 0
+      Description: 
+      Languages:
+      - 'Current:  {0}'
+      - "\u0422\u0435\u043A\u0443\u0449\u0438\u0435:  {0}"
+      Flags: 0000
+      Languages_Touch: []
+    - Term: LockedStage_Need
+      TermType: 0
+      Description: 
+      Languages:
+      - 'Need for stage:  {0}'
+      - "\u041D\u0443\u0436\u043D\u043E:  {0}"
+      Flags: 0000
+      Languages_Touch: []
+    - Term: LevelMenu_Header
+      TermType: 0
+      Description: 
+      Languages:
+      - Choose Level
+      - "\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0443\u0440\u043E\u0432\u0435\u043D\u044C"
+      Flags: 0000
+      Languages_Touch: []
+    - Term: Stage_Name
+      TermType: 0
+      Description: 
+      Languages:
+      - STAGE 2
+      - 
+      Flags: 0000
+      Languages_Touch: []
+    - Term: Stage_Unlock
+      TermType: 0
+      Description: 
+      Languages:
+      - To unlock
+      - "\u0427\u0442\u043E\u0431\u044B \u043E\u0442\u043A\u0440\u044B\u0442\u044C"
+      Flags: 0000
+      Languages_Touch: []
+    CaseInsensitiveTerms: 0
+    OnMissingTranslation: 1
+    mTerm_AppName: 
+    mLanguages:
+    - Name: English
+      Code: en
+      Flags: 0
+    - Name: Russian
+      Code: ru
+      Flags: 0
+    IgnoreDeviceLanguage: 0
+    _AllowUnloadingLanguages: 0
+    Google_WebServiceURL: 
+    Google_SpreadsheetKey: 
+    Google_SpreadsheetName: 
+    Google_LastUpdatedVersion: 
+    Google_Password: change_this
+    GoogleUpdateFrequency: 3
+    GoogleInEditorCheckFrequency: 2
+    GoogleUpdateSynchronization: 1
+    GoogleUpdateDelay: 0
+    Assets: []
+    Spreadsheet_LocalFileName: 
+    Spreadsheet_LocalCSVSeparator: ','
+    Spreadsheet_LocalCSVEncoding: utf-8
+    Spreadsheet_SpecializationAsRows: 1

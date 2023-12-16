@@ -18,7 +18,7 @@ namespace Levels
             public Cuttable StartingCuttable;
             public PolygonCollider2D TargetPolygon;
             public ComplexCutPostProcessor CutPostProcessor;
-            public SpriteRendererColorRandomizer ColorRandomizer;
+            public ShapeColorHolder ColorRandomizer;
         }
 
         public class ShapeCuttingResult
@@ -92,7 +92,7 @@ namespace Levels
                 return input;
             }));
             
-            _fxColor = input.ColorRandomizer.Randomize();
+            _fxColor = input.ColorRandomizer.GetColor();
             ClearCurrentPieces();
 
             _linecastCutter.SetPostProcessor(input.CutPostProcessor);
@@ -137,7 +137,6 @@ namespace Levels
         public void StopCutting()
         {
             _lineInput.Disable();
-            _polygonDrawer.enabled = false;
             _linecastCutter.enabled = false;
             _lineView.enabled = false;
         }
@@ -145,7 +144,6 @@ namespace Levels
         public void ContinueCutting()
         {
             _lineInput.Enable();
-            _polygonDrawer.enabled = true;
             _linecastCutter.enabled = true;
             _lineView.enabled = true;
         }
@@ -172,7 +170,6 @@ namespace Levels
         private IEnumerator InvokeRoutine()
         {
             yield return null;
-            print("InvokeRoutine");
 
             if (_currentCuttable != null)
                 Cutted?.Invoke(_currentCuttable);

@@ -13,6 +13,7 @@ namespace Levels
         [SerializeField] private Button _pauseButton;
         [SerializeField] private Button _resumeButton;
         [SerializeField] private UiShowingAnimation _pauseScreen;
+        [SerializeField] private Transform _tutorialPoint;
 
         public WarningTimerView TimerView => _timerView;
         public ProgressionView ProgressionView => _progressionView;
@@ -22,5 +23,6 @@ namespace Levels
         public Button PauseButton => _pauseButton;
         public Button ResumeButton => _resumeButton;
         public UiShowingAnimation PauseScreen => _pauseScreen;
+        public Transform TutorialPoint => _tutorialPoint;
     }
 }

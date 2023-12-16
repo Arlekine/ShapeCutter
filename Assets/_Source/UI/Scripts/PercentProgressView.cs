@@ -30,7 +30,7 @@ public class PercentProgressView : MonoBehaviour
             throw new ArgumentException($"{nameof(percent)} should be between 0 and 1");
 
         _showingAnimation.Show();
-        _runningNumberView.ShowNumber(Mathf.RoundToInt(percent * 100), PercentFormat);
+        _runningNumberView.ShowNumber((int)(percent * 100), PercentFormat);
 
         switch (status)
         {

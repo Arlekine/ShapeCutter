@@ -25,6 +25,9 @@ public sealed class PulsingAnimation : MonoBehaviour
     {
         _currentSequence?.Kill();
         _currentSequence = DOTween.Sequence();
+
+        target.localScale = Vector3.one * _smallScale; 
+
         _currentSequence.Append(target.transform.DOScale(_bigScale, _circleTime * 0.5f));
         _currentSequence.Append(target.transform.DOScale(_smallScale, _circleTime * 0.5f));
         _currentSequence.SetLoops(-1);

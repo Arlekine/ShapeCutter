@@ -4,18 +4,18 @@ using UnityEngine;
 [Serializable]
 public class SettingsData
 {
-    [SerializeField] private bool _soundOn = true;
-    [SerializeField] private bool _hapticOn = true;
+    public bool soundOn = true;
+    public bool hapticOn = true;
 
     public bool SoundOn
     {
-        get => _soundOn;
-        set => _soundOn = value;
+        get => soundOn;
+        set => soundOn = value;
     }
 
     public bool HapticOn
     {
-        get => _hapticOn;
-        set => _hapticOn = value;
+        get => hapticOn;
+        set => hapticOn = value;
     }
 }

@@ -12,11 +12,13 @@ namespace UnitySpriteCutter.Control.PostProcessing
             if (output.firstSide.BoundsSquare > output.secondSide.BoundsSquare)
             {
                 newRigidbody.bodyType = RigidbodyType2D.Dynamic;
+                newRigidbody.gravityScale = oldRigidbody.gravityScale;
             }
             else
             {
                 newRigidbody.bodyType = oldRigidbody.bodyType;
                 oldRigidbody.bodyType = RigidbodyType2D.Dynamic;
+                newRigidbody.gravityScale = oldRigidbody.gravityScale;
             }
 
             return output;

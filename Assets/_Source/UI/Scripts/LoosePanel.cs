@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,14 +8,22 @@ public class LoosePanel : MonoBehaviour
     [SerializeField] private UiShowingAnimation _showingAnimation;
 
     [Space]
+    [SerializeField] private TMP_Text _hasAdText;
+    [SerializeField] private TMP_Text _noAdText;
+
+    [Space]
     [SerializeField] private Button _skipButton;
     [SerializeField] private Button _restartButton;
 
     public Action OnSkip;
     public Action OnRestart;
 
-    public void Show()
+    public void Show(bool hasSkipOption)
     {
+        _skipButton.gameObject.SetActive(hasSkipOption);
+        _hasAdText.gameObject.SetActive(hasSkipOption);
+        _noAdText.gameObject.SetActive(hasSkipOption == false);
+
         _showingAnimation.Show();
     }
 

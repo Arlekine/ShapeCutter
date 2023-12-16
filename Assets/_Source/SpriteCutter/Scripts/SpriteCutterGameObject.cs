@@ -75,7 +75,7 @@ namespace UnitySpriteCutter {
 
 		public void BuildCollidersFrom( List<PolygonColliderParametersRepresentation> representations ) {
 			foreach ( Collider2D collider in gameObject.GetComponents<Collider2D>() ) {
-				Collider2D.Destroy( collider );
+				Collider2D.DestroyImmediate( collider );
 			}
 			foreach ( PolygonColliderParametersRepresentation representation in representations ) {
 				PolygonCollider2D collider = gameObject.AddComponent<PolygonCollider2D>();

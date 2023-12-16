@@ -22,4 +22,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6ea0c515d31bdc948870754dc8e97b7b, type: 2}
   - {fileID: 11400000, guid: bee2acae7633fdb49b4885522860b98f, type: 2}
   - {fileID: 11400000, guid: eba286630c832174984a28555cdad2d6, type: 2}
-  _starsToOpenStage: 6
+  _starsToOpenStage: 16

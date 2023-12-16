@@ -9,10 +9,12 @@ namespace Levels
         [SerializeField] private LevelResultProgress _progress;
         [SerializeField] private UiShowingAnimation _progressShowingAnimation;
         [SerializeField] private Button _checkButton;
+        [SerializeField] private RectTransform _tutorialPoint;
 
         public FinalPercentShower FinalPercentShower => _finalPercentShower;
         public LevelResultProgress Progress => _progress;
         public UiShowingAnimation ProgressShowingAnimation => _progressShowingAnimation;
         public Button CheckButton => _checkButton;
+        public RectTransform TutorialPoint => _tutorialPoint;
     }
 }

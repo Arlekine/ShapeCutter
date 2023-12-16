@@ -1,11 +1,14 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
+using I2.Loc;
 using Levels;
 using UISystem;
 using UnityEngine;
 using UnityEngine.UI;
+using YG;
 
 public class CompositeRoot : MonoBehaviour, IUISpawner
 {
@@ -14,16 +17,24 @@ public class CompositeRoot : MonoBehaviour, IUISpawner
     [SerializeField] private UI _ui;
     [SerializeField] private List<Stage> _stages = new List<Stage>();
 
+    [Header("Tutorial")]
+    [SerializeField] private TutorialHolder _tutorialHolder;
+    [SerializeField] private TutorialLevel _tutorialLevel;
+
     [Header("UI-Header")]
+    [SerializeField] private GameObject _headerMenu;
     [SerializeField] private Button _restartButton;
     [SerializeField] private Button _homeButton;
     
     [Header("UI-Level")]
-    [SerializeField] private WinPanel _winPanelPrefab;
+    [SerializeField] private WinPanel _winPanel;
+    [SerializeField] private GameCompletePanel _gameCompletePanel;
+    [SerializeField] private StageLockedPanel _stageLockedPanel;
     [SerializeField] private LoosePanel _loosePanel;
 
     [Header("UI-Main")] 
     [SerializeField] private LevelsMenu _levelMenuPrefab;
+    [SerializeField] private GameObject _mainButtons;
     [SerializeField] private SettingsView _settingsView;
 
     [Header("UI-MainMenu")]
@@ -46,11 +57,29 @@ public class CompositeRoot : MonoBehaviour, IUISpawner
     private Settings _settings;
     private AudioSource _backMusicSource;
 
+    private LocalizationSystem _localizationSystem;
+    
     private float _defaultMusicVolume;
     private float _silentMusicVolume = 0.025f;
 
-    public void Start()
+    private IEnumerator Start()
     {
+        _mainButtons.SetActive(false); 
+
+        while (YandexGame.SDKEnabled == false)
+        {
+            yield return null;
+        }
+
+        StartGame();
+    }
+    
+    private void StartGame()
+    {
+        _mainButtons.SetActive(true);
+        var language = YandexGame.EnvironmentData.language;
+        _localizationSystem = new LocalizationSystem(language);
+
         _defaultMusicVolume = _backMusic.Volume;
         _backMusicSource = _backMusic.Play();
         
@@ -68,8 +97,11 @@ public class CompositeRoot : MonoBehaviour, IUISpawner
             defaultGameData.StagesDatas.Add(stageData);
         }
 
-        _dataLoader = new LocalDataLoader();
+        _dataLoader = new YGDataLoader();
         var data = _dataLoader.Load(defaultGameData);
+
+        _tutorialHolder.SetData(data.TutorialProgress);
+        _dataLoader.CurrentGameData.TutorialProgress.Updated += () => _dataLoader.Save();
 
         _settings = new Settings(data.Settings);
         _settingsView.Init(_settings);
@@ -83,9 +115,14 @@ public class CompositeRoot : MonoBehaviour, IUISpawner
         }
 
         _loosePanel.OnRestart += RestartCurrentLevel;
-        _winPanelPrefab.OnRestart += RestartCurrentLevel;
+        _loosePanel.OnSkip += SkipCurrentLevel;
+        _winPanel.OnRestart += RestartCurrentLevel;
+        _gameCompletePanel.OnHome += OpenMainMenu;
+        _stageLockedPanel.OnHome += OpenMainMenu;
 
-        _winPanelPrefab.OnNext += OnNextLevel;
+        YandexGame.RewardVideoEvent += OnRewardedWatched;
+
+        _winPanel.OnNext += OnNextLevel;
 
         _restartButton.onClick.AddListener(RestartCurrentLevel);
         _homeButton.onClick.AddListener(OpenMainMenu);
@@ -96,6 +133,19 @@ public class CompositeRoot : MonoBehaviour, IUISpawner
         _continueButton.onClick.AddListener(Continue);
         _levelMenuButton.onClick.AddListener(OpenLevelMenu);
         //_cuttingModeButton.onClick.AddListener(Continue);
+
+        if (data.TutorialProgress.IsStepFinished(TutorialStep.TUTORIAL_LEVEL_PASSED) == false)
+        {
+            _headerMenu.SetActive(false);
+            _backMusicSource.DOFade(_defaultMusicVolume, 0.3f);
+            DestroyCurrentLevel();
+
+            _mainMenu.HideInstantly();
+
+            _currentLevelRoot = Instantiate(_tutorialLevel);
+            _currentLevelRoot.Init(_ui, _tutorialHolder);
+            _currentLevelRoot.Completed += OnTutorialCompleted;
+        }
     }
 
     private void Continue()
@@ -109,11 +159,20 @@ public class CompositeRoot : MonoBehaviour, IUISpawner
 
     private void OpenFreeCuttingLevel()
     {
+    }
 
+    private void OnTutorialCompleted(LevelResult result)
+    {
+        _headerMenu.SetActive(true);
+        _dataLoader.CurrentGameData.TutorialProgress.FinishedStep(TutorialStep.TUTORIAL_LEVEL_PASSED);
+        OpenLevel(_stages[0].Levels[0]);
     }
 
     private void OpenMainMenu()
     {
+        _backMusicSource.DOFade(_defaultMusicVolume, 0.3f);
+        _gameCompletePanel.Hide();
+        _stageLockedPanel.Hide();
         _mainMenu.Show();
         DestroyCurrentLevel();
     }
@@ -170,17 +229,54 @@ public class CompositeRoot : MonoBehaviour, IUISpawner
 
     private void RestartCurrentLevel()
     {
+        YandexGame.FullscreenShow();
         CreateLevel(_currentLevel.LevelPrefab);
+    }
+
+    private void OnRewardedWatched(int id)
+    {
+        if (_currentLevel.CurrentState == Level.State.Opened)
+        {
+            _currentLevel.CurrentState = Level.State.Passed;
+
+            var next = GetNextLevel(_currentLevel);
+
+            if (next.level != null)
+                OpenLevel(next.level);
+        }
+    }
+
+    private void SkipCurrentLevel()
+    {
+        if (_currentLevel.CurrentState == Level.State.Opened)
+        {
+            YandexGame.RewVideoShow(1);
+        }
     }
 
     private void OnNextLevel()
     {
+        YandexGame.FullscreenShow();
         var next = GetNextLevel(_currentLevel);
+        var stars = CalculateStars();
 
         if (next.level != null)
-            OpenLevel(next.level);
-
-        //else - show "you beat the game" menu
+        {
+            next.stage.UpdateStars(stars.earned);
+            if (next.stage.IsOpened)
+            {
+                OpenLevel(next.level);
+            }
+            else
+            {
+                _stageLockedPanel.Show(stars.earned, next.stage.StarsToOpenStage);
+            }
+        }
+        else
+        {
+            _gameCompletePanel.Show();
+            _winPanel.Hide();
+        }
     }
 
     private (Level level, Stage stage) GetNextLevel(Level currentLevel)
@@ -191,7 +287,7 @@ public class CompositeRoot : MonoBehaviour, IUISpawner
 
         if (levelIndex >= _stages[levelsStage].Levels.Count - 1)
         {
-            if (levelsStage >= _stages.Count)
+            if (levelsStage >= _stages.Count - 1)
                 return (null, null);
             
             return (_stages[levelsStage + 1].Levels[0], _stages[levelsStage + 1]);
@@ -227,7 +323,7 @@ public class CompositeRoot : MonoBehaviour, IUISpawner
             Destroy(_currentLevelRoot.gameObject);
 
             _loosePanel.Hide();
-            _winPanelPrefab.Hide();
+            _winPanel.Hide();
         }
     }
 
@@ -253,7 +349,7 @@ public class CompositeRoot : MonoBehaviour, IUISpawner
         DestroyCurrentLevel();
 
         _currentLevelRoot = Instantiate(levelRoot);
-        _currentLevelRoot.Init(_ui);
+        _currentLevelRoot.Init(_ui, _tutorialHolder);
         _currentLevelRoot.Completed += OnLevelCompleted;
     }
 
@@ -282,18 +378,18 @@ public class CompositeRoot : MonoBehaviour, IUISpawner
             next.level.CurrentState = Level.State.Opened;
         
         if (result != LevelResult.Loose)
-            SaveLevels(next.stage, next.level);
+            SaveLevels(next.stage == null ? _stages[GetLevelsStageIndex(_currentLevel)] : next.stage, next.level == null ? _currentLevel : next.level);
 
         _backMusicSource.DOFade(_silentMusicVolume, 0.3f);
         if (result == LevelResult.Loose)
         {
             _loseSound.Play();
-            _loosePanel.Show();
+            _loosePanel.Show(_currentLevel.CurrentState == Level.State.Opened);
         }
         else
         {
             _winSound.Play();
-            _winPanelPrefab.Show(result);
+            _winPanel.Show(result);
         }
     }
 }

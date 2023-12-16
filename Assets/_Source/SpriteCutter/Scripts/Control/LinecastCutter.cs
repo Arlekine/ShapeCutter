@@ -4,7 +4,7 @@ using UnitySpriteCutter.Control.PostProcessing;
 
 namespace UnitySpriteCutter.Control
 {
-    internal class LinecastCutter : MonoBehaviour
+    public class LinecastCutter : MonoBehaviour
     {
         [SerializeField] private LayerMask _cuttableLayer;
         [SerializeField] private float _minLineLength = 0.01f;
@@ -51,7 +51,7 @@ namespace UnitySpriteCutter.Control
             {
                 SpriteCutter.Cut(new SpriteCutterInput(lineStart, lineEnd, cuttable), (output) =>
                 {
-                    _cutSound.Play();
+                    _cutSound?.Play();
                     _cutPostProcessor.PostProcessCut(output);
                 });
             }

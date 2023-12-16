@@ -10,6 +10,6 @@ namespace Levels
 
         public Action<LevelResult> Completed;
 
-        public abstract void Init(UI ui);
+        public abstract void Init(UI ui, TutorialHolder tutorial);
     }
 }

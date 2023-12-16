@@ -51,7 +51,7 @@ namespace Levels
 
         private float PassedTimeNormalized => (_timeForLevel - (float)_timer.TimePass.TotalSeconds) / _timeForLevel;
 
-        public override void Init(UI ui)
+        public override void Init(UI ui, TutorialHolder tutorial)
         {
             _ui = ui;
             _shapeCuttingTask.Init();
@@ -150,7 +150,7 @@ namespace Levels
                 CutPostProcessor = _cutPostProcessor,
                 StartingCuttable = _currentCuttable,
                 TargetPolygon = _tasks[_currentTaskIndex],
-                ColorRandomizer = _currentCuttable.GetComponent<SpriteRendererColorRandomizer>()
+                ColorRandomizer = _currentCuttable.GetComponent<ShapeColorHolder>()
             });
             _shapeCuttingTask.StopCutting();
 
@@ -209,7 +209,6 @@ namespace Levels
                 if (newSimilarity < _lastCutSimilarity)
                 {
                     _speedLevelUI.FinalPercentShower.Show(newSimilarity, PercentProgressView.Status.Loose);
-                    StartCoroutine(DelayedActionRoutine(_timeBeforeNextShape, ResetCurrent));
                 }
                 else if (newSimilarity < _targetSimilarity)
                 {

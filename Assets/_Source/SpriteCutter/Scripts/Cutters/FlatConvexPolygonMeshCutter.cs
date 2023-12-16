@@ -83,8 +83,11 @@ namespace UnitySpriteCutter.Cutters {
 			return result.ToArray();
 		}
 
-		static Vector2[] GenerateProportionalUVs( Vector3[] vertices, Mesh original ) 
+		static Vector2[] GenerateProportionalUVs( Vector3[] vertices, Mesh original )
         {
+            if (original.uv.Length == 0)
+                return Array.Empty<Vector2>();
+
 			Vector2[] result = new Vector2[ vertices.Length ];
 
 			int vertexIndexToCalculateDiff = 0;

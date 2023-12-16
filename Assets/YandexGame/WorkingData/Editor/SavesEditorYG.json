@@ -1,0 +1,74 @@
+{
+    "idSave": 43,
+    "isFirstSession": false,
+    "language": "ru",
+    "promptDone": false,
+    "GameData": {
+        "CurrentLevel": 7,
+        "CurrentStage": 0,
+        "TutorialProgress": {
+            "finishedSteps": [
+                0,
+                1
+            ]
+        },
+        "Settings": {
+            "soundOn": true,
+            "hapticOn": true
+        },
+        "StagesDatas": [
+            {
+                "LevelsData": [
+                    3,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3
+                ]
+            },
+            {
+                "LevelsData": [
+                    2,
+                    3,
+                    2,
+                    3,
+                    2,
+                    3,
+                    3,
+                    3,
+                    3
+                ]
+            },
+            {
+                "LevelsData": [
+                    1,
+                    2,
+                    3,
+                    1,
+                    1,
+                    2,
+                    2,
+                    3,
+                    2
+                ]
+            },
+            {
+                "LevelsData": [
+                    1,
+                    2,
+                    1,
+                    0,
+                    1,
+                    2,
+                    3,
+                    3,
+                    3
+                ]
+            }
+        ]
+    }
+}

@@ -128,8 +128,7 @@ namespace UnitySpriteCutter
 				} else 
                 {
 					PrepareResultGameObject(firstSideResult, spriteRenderer, meshRenderer, meshCutResult.firstSideMesh, collidersCutResults.firstSideColliderRepresentations);
-
-					onCutSuccess?.Invoke(new SpriteCutterOutput()
+                    onCutSuccess?.Invoke(new SpriteCutterOutput()
 					{
 						firstSide = firstSideResult.gameObject.AddComponent<Cuttable>(),
                         secondSide = secondSideResult.gameObject.AddComponent<Cuttable>()

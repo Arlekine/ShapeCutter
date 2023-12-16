@@ -53,13 +53,6 @@ canvas {
     justify-content: center;
     align-items: center;
 }
-#unity-logo {
-    text-align: center;
-}
-#unity-logo img {
-    max-width: 80%;
-	max-height: 80%;
-}
 #unity-progress-bar-empty {
     width: 40%;
     height: 24px;

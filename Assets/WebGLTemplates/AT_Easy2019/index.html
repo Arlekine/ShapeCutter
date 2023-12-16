@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover, user-scalable=no"/>
+    <script src="%UNITY_WEBGL_LOADER_URL%"></script>
+
+    <!-- Яндекс СДК подключен -->
+    <script src="https://yandex.ru/games/sdk/v2"></script>
+
+    <script>
+      const YASDK_SHOW_PRELOADER_AD = "%UNITY_CUSTOM_YASDK_SHOW_PRELOADER_AD%"
+      const LOCK_ASPECT_RATIO_ON_MOBILE = "%UNITY_CUSTOM_LOCK_ASPECT_RATIO_ON_MOBILE%"; // Зафиксировать экран на телефоне.
+      const LOCK_ASPECT_RATIO_ON_DESKTOP = "%UNITY_CUSTOM_LOCK_ASPECT_RATIO_ON_DESKTOP%"; // Зафиксировать экран на ПК.
+      const ASPECT_RATIO = %UNITY_WIDTH% / %UNITY_HEIGHT%;
+      const DISABLE_CONSOLE_LOG = "%UNITY_CUSTOM_DISABLE_CONSOLE_LOG%"; // Отключить спам отладочным сообщений.
+    </script>
+
+    <style>
+      html, body { 
+        /* Убираем отступы */
+        padding: 0;
+        margin: 0;
+
+        /* Отключаем скролл и лонгтап на IOS */
+        overflow: hidden;
+        -webkit-touch-callout:none;
+        -webkit-user-select:none;
+        -khtml-user-select:none;
+        -moz-user-select:none;
+        -ms-user-select:none;
+        user-select:none;
+        -webkit-tap-highlight-color:rgba(0,0,0,0);
+
+        /* Ставим высоту на 100% */
+        height: 100%;
+
+        /* Меняем цвет полос */
+     	background-image: url('background.png');
+
+        /* Центрируем, если привязана картинка или творим магию, чтобы можно было использовать градиент */
+  	background-position-x: 50%;
+  	background-repeat: no-repeat;
+ 	background-size: cover;
+        background-attachment: fixed;
+       }
+      .webgl-content * {
+        width: 100%; 
+        height: 100%; 
+
+        /* Меняем цвет загрузочного экрана */
+        background-image: linear-gradient(#2976fa, #6919c6);
+
+        /* Центрируем, если привязана картинка или творим магию, чтобы можно было использовать градиент */
+  	background-position-x: 50%;
+  	background-repeat: no-repeat;
+ 	background-size: cover;
+        background-attachment: fixed;
+      }
+      .webgl-content .logo, .progress {position: absolute; left: 50%; top: 50%; -webkit-transform: translate(-50%, -50%); transform: translate(-50%, -50%);}
+      .webgl-content .logo {
+        width: 144px; 
+        height: 144px;
+
+        background: url('logo.png');
+
+        background-position: center;
+  	background-repeat: no-repeat;
+ 	background-size: contain;
+        background-attachment: scroll;
+      }
+      .webgl-content .progress {height: 18px; width: 141px; margin-top: 90px;}
+      .webgl-content .progress .empty {background: url('loader-empty.png') no-repeat right / cover; float: right; width: 100%; height: 100%; display: inline-block;}
+      .webgl-content .progress .full {background: url('loader-full.png') no-repeat left / cover; float: left; width: 0%; height: 100%; display: inline-block;}
+    </style>
+
+    <script>
+      // Инициализация СДК
+      YaGames
+      .init()
+      .then(ysdk => {
+        console.log('Yandex SDK initialized');
+        window.ysdk = ysdk;
+        if(YASDK_SHOW_PRELOADER_AD) {
+          ysdk.adv.showFullscreenAdv();
+        }
+      });
+
+      // Убираем ошибку на телефоне "WEBGL is not supported"
+      UnityLoader.Error.Handler = function() {};
+      UnityLoader.compatibilityCheck = function(e,t,r) { t(); };
+
+      if(DISABLE_CONSOLE_LOG) {
+        // Отключаем спам отладочных сообщений в консоль
+        console.log = function(){};
+      }
+
+      // Метод Unity
+      var unityInstance = UnityLoader.instantiate("unityContainer", "%UNITY_WEBGL_BUILD_URL%", {onProgress: UnityProgress});
+
+      // Выключаем появление меню при правом клике мыши
+      document.addEventListener('contextmenu', event => event.preventDefault());
+
+      // Определение домена
+      var isEnglish;
+
+      var currentURL = window.location.href;
+      if(currentURL.indexOf(".com") > -1) {
+        isEnglish = true;
+      } else {
+        isEnglish = false;
+      }
+
+      // Проверяем устройство
+      var isTouchDevice;
+
+      if('ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        isTouchDevice = true;
+      } else {
+        isTouchDevice = false;
+      }
+
+      // Возвращаем фокус, если кликнули по экрану
+      window.addEventListener('pointerdown', () => {
+        window.focus();
+      });
+      window.addEventListener('touchstart', () => {
+        window.focus();
+      });
+
+      // Фиксируем экран с игрой
+      function updateAspectRatio() {
+        var windowWidth = window.innerWidth;
+        var windowHeight = window.innerHeight;
+        var containerAspectRatio = ASPECT_RATIO;
+        
+        if (windowWidth / windowHeight > containerAspectRatio) {
+          unityInstance.container.style.width = windowHeight * containerAspectRatio + "px";
+          unityInstance.container.style.height = "100vh";
+        } else {
+          unityInstance.container.style.width = "100vw";
+          unityInstance.container.style.height = windowWidth / containerAspectRatio + "px";
+        }
+
+        // Центрируем
+        unityInstance.container.style.margin = "auto";
+        unityInstance.container.style.top = "0";
+        unityInstance.container.style.left = "0";
+        unityInstance.container.style.bottom = "0";
+        unityInstance.container.style.right = "0";
+
+        /* Добавляем тени по бокам */
+        unityInstance.container.style.boxShadow = "%UNITY_CUSTOM_CONFIGURE_SHADOWS%";
+      }
+
+      function GameLoaded() {
+        // Скрываем логотип и загрузочную линию
+        unityInstance.logo.style.display = unityInstance.progress.style.display = "none";
+
+        // Проверяем устройство и фиксируем экран, если включено
+        if(isTouchDevice) {
+          if(LOCK_ASPECT_RATIO_ON_MOBILE) {
+            updateAspectRatio();
+            window.addEventListener("resize", updateAspectRatio);
+          }
+        } else {
+          if(LOCK_ASPECT_RATIO_ON_DESKTOP) {
+            updateAspectRatio();
+            window.addEventListener("resize", updateAspectRatio);
+          }
+        }
+
+          // Недобросовестная реклама
+          if(isEnglish) {
+            console.log("%cThere used to be advertising here. Enjoy your game! Best regards, Chika.", "background: orange; color: white; padding: 2px 4px; border-radius: 2px; font-family: sans-serif;");
+          } else {
+            console.log("%cРаньше здесь была реклама. Приятной игры! С уважением, Чика.", "background: orange; color: white; padding: 2px 4px; border-radius: 2px; font-family: sans-serif;");
+          }
+      }
+
+      // Метод Unity
+      function UnityProgress(unityInstance, progress) {
+        if (!unityInstance.Module)
+          return;
+        if (!unityInstance.logo) {
+          unityInstance.logo = document.createElement("div");
+          unityInstance.logo.className = "logo " + unityInstance.Module.splashScreenStyle;
+          unityInstance.container.appendChild(unityInstance.logo);
+        }
+        if (!unityInstance.progress) {    
+          unityInstance.progress = document.createElement("div");
+          unityInstance.progress.className = "progress " + unityInstance.Module.splashScreenStyle;
+          unityInstance.progress.empty = document.createElement("div");
+          unityInstance.progress.empty.className = "empty";
+          unityInstance.progress.appendChild(unityInstance.progress.empty);
+          unityInstance.progress.full = document.createElement("div");
+          unityInstance.progress.full.className = "full";
+          unityInstance.progress.appendChild(unityInstance.progress.full);
+          unityInstance.container.appendChild(unityInstance.progress);
+        }
+        unityInstance.progress.full.style.width = (100 * progress) + "%";
+        unityInstance.progress.empty.style.width = (100 * (1 - progress)) + "%";
+
+        if(progress == 1) GameLoaded();
+      }
+
+    </script>
+  </head>
+  <body>
+    <div class="webgl-content">
+      <div id="unityContainer" style="position: fixed; width: 100%; height: 100%"></div>
+    </div>
+  </body>
+</html>
